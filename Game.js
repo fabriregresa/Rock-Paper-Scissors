@@ -1,62 +1,59 @@
-function playGame(){
-    //PHASE 0 : SETTING UP
-    let humanScore = 0;
-    let computerScore = 0;
-    alert("Let's play some matches")
+let humanScore = 0;
+let computerScore = 0;
 
-    //PHASE 1 :HUMAN PICK
-    function getHumanChoice(){
-        let userChoice = prompt("Please enter your choice: rock, paper, scissors")
-        return userChoice
-    }
-
-    //PHASE 2 : COMPUTER PICK
-    function getComputerChoice (){
-        let numero = Math.random();
-        if (numero < 1/3){
-            return "rock"
-        } else if (numero >= 1/3 && numero <2/3){
-            return "paper"
-        } else {
-            return "scissors"
-        }
-    }
-
-    //PHASE 3 : ROUND
-    function playRound(humanChoice,computerChoice){
-        let userAnswer = humanChoice.toLowerCase();
-        if (userAnswer === "rock" && computerChoice === "scissors"  
-            || userAnswer === "paper" && computerChoice === "rock"
-            || userAnswer === "scissors" && computerChoice === "paper"){
-                humanScore += 1; 
-                return "You win " + userAnswer + " beats " + computerChoice;
-        }else if(userAnswer === "scissors" && computerChoice === "rock"  
-            || userAnswer === "rock" && computerChoice === "paper"
-            || userAnswer === "paper" && computerChoice === "scissors" ){
-                computerScore += 1;
-                return "You Lose! " + computerChoice + " beats " + userAnswer;
-        }else{
-            return "That's a draw " + userAnswer + " is the same as " + computerChoice;
-        }
-    }
-    //GAME LOOP
-    for (let i = 0; i < 5; i++){
-        let humanChoice = getHumanChoice();
-        let computerChoice = getComputerChoice();
-        let result = playRound(humanChoice, computerChoice);
-        console.log(result)
-    }
-    //GAME SCORE
-    console.log ("Final score:");
-    console.log ("You: " + humanScore);
-    console.log ("Computer: " + computerScore);
-    //THE WINNER
-    if (humanScore > computerScore){
-        console.log( "You win the game!")
-    } else if(humanScore === computerScore){
-        console.log ("That's a tie!")
+function getComputerChoice (){
+    let number = Math.random();
+    if (number < 1/3){
+        return "rock"
+    } else if (number >= 1/3 && number <2/3){
+        return "paper"
     } else {
-        console.log("You lose the game!")
+        return "scissors"
+    }
+    }
+
+function playRound(humanChoice){
+    let computerChoice = getComputerChoice();
+    let userAnswer = humanChoice.toLowerCase();
+    let resultMessage = "";
+        
+    if (
+        userAnswer === "rock" && computerChoice === "scissors"  ||
+        userAnswer === "paper" && computerChoice === "rock" ||
+        userAnswer === "scissors" && computerChoice === "paper"
+    ){
+            humanScore += 1; 
+            resultMessage = `You win! ${userAnswer} beats ${computerChoice}`
+    }else if(
+        userAnswer === "scissors" && computerChoice === "rock" ||
+        userAnswer === "rock" && computerChoice === "paper" ||
+        userAnswer === "paper" && computerChoice === "scissors" 
+    ){
+            computerScore += 1;
+            resultMessage = `You lose! ${computerChoice} beats ${userAnswer}`;
+    }else{
+        resultMessage = `That's a draw: ${userAnswer} equals ${computerChoice}`;
+    }
+    updateDisplay(resultMessage);
+    checkWinner();
+}
+function checkWinner(){
+    if(humanScore === 5 || computerScore === 5) {
+        const winner = humanScore === 5 ? "You win the game!" : "Computer wins the game!";
+        document.getElementById('results').innerHTML += `<p><strong>${winner}</strong></p>`;
+
+        document.getElementById('rock').disabled = true;
+        document.getElementById('paper').disabled = true;
+        document.getElementById('scissors').disabled = true;
     }
 }
-playGame();
+function updateDisplay(message) {
+const resultsDiv = document.getElementById('results');
+resultsDiv.innerHTML = `
+    <p>${message}</p>
+    <p>Score: You ${humanScore} - ${computerScore} Computer</p>`;
+}
+document.getElementById('rock').addEventListener('click', () => playRound('rock'));
+document.getElementById('paper').addEventListener('click', () => playRound('paper'));
+document.getElementById('scissors').addEventListener('click', () => playRound('scissors'));
+
