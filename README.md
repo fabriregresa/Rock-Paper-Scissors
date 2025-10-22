@@ -57,5 +57,9 @@ I first built the project in **JavaScript**, running entirely in the **browser c
 
 This is a console-only project. There is no UI.
 
+Update (v2.0): A basic UI has been added.
+To use the original console version, refer to the python file that remains
+unchanged from last version.
+
 ---
 
